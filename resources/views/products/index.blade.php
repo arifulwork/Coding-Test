@@ -69,6 +69,8 @@
                                     @forelse($product_variants as $variants)
                                     {{$variants->variant}}
                                     
+                                    
+                                    
                                     <br>
                                 @empty
                                 @endforelse
