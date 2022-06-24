@@ -91,12 +91,23 @@
         </div>
 
         <div class="card-footer">
-            <div class="row justify-content-between">
-                <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    @php
+                        $showing = $products->perPage() * ($products->currentPage()-1) + 1;
+                        $to = $products->perPage() * $products->currentPage();
+                        $total = $products->total();
+                    @endphp
+                    <p>
+                        Showing {{$showing > $total ? $total : $showing}}
+                        to 
+                        {{$to > $total ? $total : $to}}
+                        out of 
+                        {{$total}}
+                    </p>
                 </div>
-                <div class="col-md-2">
-
+                <div>
+                    {{ $products->links()}}
                 </div>
             </div>
         </div>
