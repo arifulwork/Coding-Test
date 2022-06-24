@@ -66,10 +66,9 @@
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
 
                                 <dt class="col-sm-3 pb-0">
-                                    @forelse($list->prices as $price)
-                                    {{$price->product_variant_one}}
-                                    {{$price->product_variant_two }}
-                                    {{$price->product_variant_three }}
+                                    @forelse($product_variants as $variants)
+                                    {{$variants->variant}}
+                                    
                                     <br>
                                 @empty
                                 @endforelse
