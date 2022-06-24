@@ -90,4 +90,46 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+    
+        $title = $request->title;
+        $variant = $request->variant;
+        $price_from = $request->price_from;
+        $price_to = $request->price_to;
+        $date = $request->date;
+
+        $vp = [$price_from, $price_to, $variant];
+
+        $product_variants = ProductVariant::all();
+
+        try{
+            $products = Product::with('prices')
+                ->when($title, function ($query, $title) {
+                    return $query->where('title', 'like', '%'.$title.'%');
+                })
+                ->when($date, function ($query, $date) {
+                    return $query->whereDate('created_at', $date);
+                })->whereHas('prices', function($q) use($vp){
+
+                    $price_from = $vp[0] ;
+                    $price_to = $vp[1] ;
+                    $variant = $vp[2] ;
+
+                    $q->when($price_from, function ($query, $price_from) {
+                        return $query->where('price', '>=', intval($price_from));
+                    })->when($price_to, function ($query, $price_to) {
+                        return $query->where('price', '<=', intval($price_to));
+                    })->when($variant, function ($query, $variant) {
+                        return $query->whereRaw("(product_variant_one = $variant or product_variant_two = $variant or product_variant_three = $variant)");
+                    });
+                })->paginate(2);
+            $products->appends($request->all());
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return view('products.index', compact('products', 'product_variants'));
+    }
 }

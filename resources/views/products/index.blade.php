@@ -8,13 +8,19 @@
 
 
     <div class="card">
-        <form action="" method="get" class="card-header">
+        <form action="{{route('search')}}" method="post" class="card-header">
+            @csrf
             <div class="form-row justify-content-between">
                 <div class="col-md-2">
-                    <input type="text" name="title" placeholder="Product Title" class="form-control">
+                    <input type="text" name="title" id="title" placeholder="Product Title" class="form-control" value="">
                 </div>
                 <div class="col-md-2">
-                    <select name="variant" id="" class="form-control">
+                    <select name="variant" id="select" class="form-control">
+                        <option value="" selected>Select variant</option>
+                    @forelse($product_variants as $item)
+                        <option value="{{$item->id}}">{{$item->variant}}</option>
+                    @empty
+                    @endforelse
 
                     </select>
                 </div>
@@ -60,7 +66,13 @@
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
 
                                 <dt class="col-sm-3 pb-0">
-                                    
+                                    @forelse($list->prices as $price)
+                                    {{$price->product_variant_one}}
+                                    {{$price->product_variant_two }}
+                                    {{$price->product_variant_three }}
+                                    <br>
+                                @empty
+                                @endforelse
                                 </dt>
                                 <dd class="col-sm-9">
                                 @forelse($list->prices as $price)
