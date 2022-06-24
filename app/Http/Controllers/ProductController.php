@@ -16,8 +16,10 @@ class ProductController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
-    {
-        return view('products.index');
+    { 
+        $products = Product::with(['prices'])->paginate(2);
+        $product_variants = ProductVariant::all();
+        return view('products.index', compact('products', 'product_variants'));
     }
 
     /**
