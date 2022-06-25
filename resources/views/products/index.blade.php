@@ -8,6 +8,7 @@
 
 
     <div class="card">
+        {{-- can be filtered by 1 or more field --}}
         <form action="{{route('search')}}" method="post" class="card-header">
             @csrf
             <div class="form-row justify-content-between">
@@ -21,7 +22,6 @@
                         <option value="{{$item->id}}">{{$item->variant}}</option>
                     @empty
                     @endforelse
-
                     </select>
                 </div>
 
@@ -30,8 +30,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Price Range</span>
                         </div>
-                        <input type="text" name="price_from" aria-label="First name" placeholder="From" class="form-control">
-                        <input type="text" name="price_to" aria-label="Last name" placeholder="To" class="form-control">
+                        <input type="number" name="price_from" aria-label="First name" placeholder="From" class="form-control">
+                        <input type="number" name="price_to" aria-label="Last name" placeholder="To" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -57,26 +57,25 @@
                     </thead>
 
                     <tbody>
-                        @forelse($products as $list)
+                    @forelse($products as $list)
                     <tr>
                         <td>{{$list->id}}</td>
-                        <td>{{$list->title}} <br> Created at : {{$list->created_at->format('d-M-Y')}}</td>
+                        <td>{{$list->title}} <br> Created at : {{$row->created_at->format('d-M-Y')}}</td>
                         <td>{{$list->description}}</td>
                         <td>
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
 
                                 <dt class="col-sm-3 pb-0">
-                                    @forelse($product_variants as $variants)
-                                    {{$variants->variant}}
-                                    
-                                    
-                                    
+                                @forelse($row->prices as $price)
+                                    {{$price->product_variant_one ? $price->product_variant_one->variant.'/' :null}}
+                                    {{$price->product_variant_two ? $price->product_variant_two->variant.'/' :null}}
+                                    {{$price->product_variant_three ? $price->product_variant_three->variant.'/' :null}}
                                     <br>
                                 @empty
                                 @endforelse
                                 </dt>
                                 <dd class="col-sm-9">
-                                @forelse($list->prices as $price)
+                                @forelse($row->prices as $price)
                                     <dl class="row mb-0">
                                         <dt class="col-sm-4 pb-0">Price : {{ number_format($price->price,2) }}</dt>
                                         <dd class="col-sm-8 pb-0">InStock : {{ number_format($price->stock,2) }}</dd>
@@ -124,6 +123,8 @@
                 </div>
             </div>
         </div>
+
+        
     </div>
 
 @endsection

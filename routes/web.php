@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +20,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('product/search', 'ProductController1@search')->name('search');
 
 Route::middleware('auth')->group(function () {
     Route::resource('product-variant', 'VariantController');
-    Route::resource('product', 'ProductController');
-    
-    Route::post('/search', [ProductController::class,'search'])->name('search'); 
+    Route::resource('product', 'ProductController1');
+    Route::post('product/search', 'ProductController1@search')->name('search');
+    Route::post('product-update/{product}', 'ProductController1@update');
     Route::resource('blog', 'BlogController');
     Route::resource('blog-category', 'BlogCategoryController');
 });
