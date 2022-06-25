@@ -11,7 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController1 extends Controller
+class ProductController extends Controller
 {
 
     /**

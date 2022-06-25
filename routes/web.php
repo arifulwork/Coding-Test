@@ -20,13 +20,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('product/search', 'ProductController1@search')->name('search');
+Route::get('product/search', 'ProductController@search')->name('search');
 
 Route::middleware('auth')->group(function () {
     Route::resource('product-variant', 'VariantController');
-    Route::resource('product', 'ProductController1');
-    Route::post('product/search', 'ProductController1@search')->name('search');
-    Route::post('product-update/{product}', 'ProductController1@update');
+    Route::resource('product', 'ProductController');
+    Route::post('product/search', 'ProductController@search')->name('search');
+    Route::post('product-update/{product}', 'ProductController@update');
     Route::resource('blog', 'BlogController');
     Route::resource('blog-category', 'BlogCategoryController');
 });
